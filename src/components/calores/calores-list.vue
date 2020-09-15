@@ -29,9 +29,6 @@
           </div>
         </v-card-title>
         <v-data-table :headers="headers" :items="caloresData" :search="search">
-          <template v-slot:item.fecha="{ item }">
-            <span>{{item.fecha | formatear_fecha}}</span>
-          </template>
           <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -57,6 +54,8 @@ export default {
       headers: [
         { text: "Animal", value: "nombre_animal" },
         { text: "Fecha", value: "fecha" },
+        { text: "En calor", value: "en_calor" },
+        { text: "Post-Inseminación", value: "post_inseminacion" },
         { text: "Observaciones", value: "observaciones" },
         { text: "Actions", value: "actions", sortable: false },
       ],
@@ -80,7 +79,16 @@ export default {
       this.caloresService
         .getAllCalores(data)
         .then((result) => {
-          this.caloresData = result.data.data;
+          this.caloresData = result.data.data.map((item) => {
+            item.fecha = this.$moment(item.fecha).format("DD-MM-YYYY");
+            item.en_calor == 0
+              ? (item.en_calor = "NO")
+              : (item.en_calor = "SI");
+            item.post_inseminacion == 0
+              ? (item.post_inseminacion = "NO")
+              : (item.post_inseminacion = "SI");
+            return item;
+          });
         })
         .catch(() => {});
     },

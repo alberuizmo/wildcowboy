@@ -3,19 +3,19 @@
     <v-container class="fill-height pa-0" fluid>
       <!-- <span class="bg"></span> -->
       <v-row class="fill-height pa-0 ma-0" align="center" justify="center">
-        <v-col cols="6" class="bg fill-height text-right">
+        <v-col cols="12" md="6" class="bg fill-height text-right d-none d-md-flex">
           <img src="../assets/img/circle-cropped.png" height="100" />
         </v-col>
-        <v-col cols="6" class="d-flex text-center fill-height columnaBotones">
+        <v-col cols="12" md="6" class="d-flex text-center fill-height columnaBotones">
           <v-row no-gutters>
             <v-col cols="12" class="text-right divUser" no-gutters>
               <div class="divNombres">
-                <span class="mb-0 username">{{
+                <span class="mb-0 username">
+                  {{
                   this.getUsuario.username
-                }}</span>
-                <span class="nombreFinca">
-                  {{ this.getFinca.nombre }}
+                  }}
                 </span>
+                <span class="nombreFinca">{{ this.getFinca.nombre }}</span>
               </div>
               <v-avatar size="36" class="mr-3">
                 <img

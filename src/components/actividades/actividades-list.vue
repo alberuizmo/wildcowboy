@@ -60,16 +60,19 @@ import { mapGetters, mapMutations } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import PartosService from "../../services/partos.service";
 import InseminacionesService from "../../services/inseminaciones.service";
+import CaloresService from "../../services/calores.service";
 export default {
   name: "actividades-list",
   data() {
     return {
+      caloresService: null,
       animalesService: null,
       partosService: null,
       inseminacionesService: null,
       animales: [],
       partos: [],
       inseminaciones: [],
+      calores: [],
       type: "month",
       types: ["month", "week", "day", "4day"],
       mode: "stack",
@@ -101,11 +104,13 @@ export default {
     this.animalesService = new AnimalesService();
     this.partosService = new PartosService();
     this.inseminacionesService = new InseminacionesService();
+    this.caloresService = new CaloresService();
   },
   mounted() {
     this.obtenerAnimales();
     this.obtenerPartos();
     this.obtenerInseminaciones();
+    this.obtenerCalores();
     this.valorCalendario = new Date();
   },
   methods: {
@@ -167,6 +172,27 @@ export default {
         .then((result) => {
           this.inseminaciones = result.data.data;
           this.getActividadesMesInseminadas(
+            this.$moment(this.valorCalendario)
+              .startOf("month")
+              .format("YYYY-MM-DD"),
+            this.$moment(this.valorCalendario)
+              .endOf("month")
+              .format("YYYY-MM-DD")
+          );
+        })
+        .catch(() => {});
+    },
+    obtenerCalores() {
+      let data = {
+        finca_id: this.getFinca.id,
+        usuario_id: this.getUsuario.id,
+        token: this.getToken,
+      };
+      this.caloresService
+        .getAllCalores(data)
+        .then((result) => {
+          this.calores = result.data.data;
+          this.obtenerVisitaVeterinarioPostInseminacion(
             this.$moment(this.valorCalendario)
               .startOf("month")
               .format("YYYY-MM-DD"),
@@ -288,11 +314,55 @@ export default {
       );
       this.events = this.events.concat(events);
     },
+    obtenerVisitaVeterinarioPostInseminacion(inicio, fin) {
+      let events = [];
+      let fechaAnalisis = this.$moment(inicio);
+      let fechaFin = this.$moment(fin).add(1, "d");
+      do {
+        let losDelDia = this.calores.filter((item) => {
+          let fechaChequeoCalor = this.$moment(item.fecha);
+          let years = this.$moment
+            .duration(fechaAnalisis.diff(fechaChequeoCalor))
+            .get("years");
+          let meses = this.$moment
+            .duration(fechaAnalisis.diff(fechaChequeoCalor))
+            .get("months");
+          let dias = this.$moment
+            .duration(fechaAnalisis.diff(fechaChequeoCalor))
+            .get("days");
+          return (
+            years == 0 &&
+            meses == 0 &&
+            dias == 9 &&
+            item.post_inseminacion == 1 &&
+            item.en_calor == 0
+          );
+        });
+        if (losDelDia.length > 0) {
+          let nombres = losDelDia.map((item) => {
+            return `${item.identificacion_animal} - ${item.nombre_animal}`;
+          });
+          events.push({
+            name: "Ecografía",
+            start: fechaAnalisis.format("YYYY-MM-DD"),
+            end: fechaAnalisis.format("YYYY-MM-DD"),
+            color: "orange",
+            timed: false,
+            details: nombres,
+          });
+        }
+        fechaAnalisis = fechaAnalisis.add(1, "d");
+      } while (
+        fechaAnalisis.format("DD-MM-YYYY") != fechaFin.format("DD-MM-YYYY")
+      );
+      this.events = this.events.concat(events);
+    },
     getEvents({ start, end }) {
       this.events = [];
       this.getActividadesMesTernero(start.date, end.date);
       this.getActividadesMesCheckeoCalores(start.date, end.date);
       this.getActividadesMesInseminadas(start.date, end.date);
+      this.obtenerVisitaVeterinarioPostInseminacion(start.date, end.date);
     },
     recorrerFechas(inicio, fin) {
       let fechaInicio = this.$moment(inicio);

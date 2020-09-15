@@ -48,6 +48,22 @@
           </v-menu>
         </v-col>
         <v-col cols="12" sm="6" md="3">
+          <v-switch
+            v-model="calorData.en_calor"
+            color="primary"
+            class="mx-2"
+            label="Esta en calor?"
+          ></v-switch>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-switch
+            v-model="calorData.post_inseminacion"
+            color="primary"
+            class="mx-2"
+            label="Post inseminación?"
+          ></v-switch>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
           <v-text-field
             label="Observaciones"
             v-model="calorData.observaciones"
@@ -81,6 +97,8 @@ export default {
         animal_id: "",
         fecha: null,
         observaciones: "",
+        en_calor: 0,
+        post_inseminacion: 0,
         finca_id: null,
         usuario_id: null,
       },
