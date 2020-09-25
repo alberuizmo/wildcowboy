@@ -2,21 +2,14 @@
   <v-card-text>
     <v-stepper v-model="paso">
       <v-stepper-header>
-        <v-stepper-step step="1" :complete="paso > 1"
-          >Registrar Finca</v-stepper-step
-        >
+        <v-stepper-step step="1" :complete="paso > 1">Registrar Finca</v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step step="2">Usuario Administrador</v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
           <v-card class="mb-2" height="270">
-            <v-form
-              ref="form"
-              v-model="valid"
-              lazy-validation
-              style="height: 100%;"
-            >
+            <v-form ref="form" v-model="valid" lazy-validation style="height: 100%;">
               <v-container fluid class="fill-height">
                 <v-row style="height: 100%;">
                   <v-col cols="12" md="4">
@@ -26,8 +19,6 @@
                       label="Nombre de la finca"
                       required
                     ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="4">
                     <v-text-field
                       v-model="finca.direccion"
                       :rules="direccionRules"
@@ -35,20 +26,14 @@
                       required
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="8">
                     <div id="mapa" ref="mapa"></div>
                   </v-col>
                 </v-row>
               </v-container>
             </v-form>
           </v-card>
-          <v-btn
-            color="primary"
-            @click="siguiente()"
-            :disabled="!valid"
-            class="mr-4"
-            >Continuar</v-btn
-          >
+          <v-btn color="primary" @click="siguiente()" :disabled="!valid" class="mr-4">Continuar</v-btn>
           <v-btn text @click="irLogin()">Cancel</v-btn>
         </v-stepper-content>
         <v-stepper-content step="2">
@@ -128,11 +113,17 @@
               </v-row>
             </v-form>
           </v-card>
-          <v-btn color="primary" @click="guardar()">Guardar</v-btn>
+          <v-btn color="primary" :loading="loading" @click="guardar()">Guardar</v-btn>
           <v-btn text @click="irLogin()">Cancel</v-btn>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+    <v-snackbar v-model="snackbar" :color="color">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="snackbar = false">Cerrar</v-btn>
+      </template>
+    </v-snackbar>
   </v-card-text>
 </template>
 
@@ -144,15 +135,18 @@ export default {
   name: "registrofinca-usurio",
   data() {
     return {
+      loading: false,
+      snackbar: false,
+      text: "",
+      color: "error",
       marcador: null,
       usersService: null,
       fincasService: null,
       google: null,
       map: null,
       paso: 1,
-      loading: false,
       valid: false,
-      finca: { nombre: "", direccion: "" },
+      finca: { nombre: "", direccion: "", cx: 0, cy: 0 },
       usuario: {
         identificacion: "",
         username: "",
@@ -161,7 +155,6 @@ export default {
         telefono: "",
         email: "",
         password: "",
-        type: 1,
       },
       nombreRules: [
         (v) => !!v || "El nombre es requerido",
@@ -198,21 +191,32 @@ export default {
         fullscreenControl: true,
         disableDefaultUi: false,
       };
-
-      var uluru = { lat: 4, lng: -74 };
+      var colombia = { lat: 4, lng: -74 };
       const mapContainer = this.$refs.mapa;
       this.map = new this.google.maps.Map(mapContainer, {
-        zoom: 4,
-        center: uluru,
+        zoom: 10,
+        center: colombia,
         options: opciones,
       });
       this.marcador = new this.google.maps.Marker({
-        position: uluru,
+        position: colombia,
         map: this.map,
         draggable: true,
       });
+
+      this.marcador.addListener("dragend", () => {
+        this.finca.cy = this.marcador.getPosition().lat();
+        this.finca.cx = this.marcador.getPosition().lng();
+        this.map.setZoom(16);
+        this.map.setCenter(this.marcador.getPosition());
+      });
     },
     siguiente() {
+      if (this.finca.cy == 0 || this.finca.cx == 0) {
+        this.text = "Debes ubicar la finca en el mapa";
+        this.snackbar = true;
+        return false;
+      }
       if (this.$refs.form.validate()) {
         this.paso = 2;
       }
@@ -236,7 +240,7 @@ export default {
         //usuario
         this.usuario["finca_id"] = finca_id;
         await this.usersService
-          .createUser(this.usuario)
+          .register(this.usuario)
           .then((response) => {
             usuario_id = response.data.id_creado;
           })
@@ -245,28 +249,19 @@ export default {
           });
         //finca-Usuario
         await this.usersService
-          .createFincaUser({
+          .createFincaUserAdmin({
             usuario_id,
             finca_id,
           })
           .then(() => {
+            this.text = "usuario y finca creados satisfactoriamente";
+            this.color = "success";
+            this.snackbar = true;
             this.$emit("cambiar", "logincomponent");
           })
           .catch(() => {
             return false;
           });
-        //finca-Usuario
-        /* await this.usersService
-          .createRolUser({
-            usuario_id,
-            rol_id: 1,
-          })
-          .then(() => {
-            this.$emit("cambiar", "logincomponent");
-          })
-          .catch(() => {
-            return false;
-          }); */
       }
     },
     cancelar() {

@@ -1,7 +1,7 @@
 import axios from "axios";
 export default class AnimalesService {
   getAllAnimales(data) {
-    return axios.post(process.env.VUE_APP_API_PUBLIC + "animales/all/", data);
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "animales/", data);
   }
   createAnimal(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "animales/", data);

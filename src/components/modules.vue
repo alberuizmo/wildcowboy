@@ -16,6 +16,9 @@
                   }}
                 </span>
                 <span class="nombreFinca">{{ this.getFinca.nombre }}</span>
+                <v-btn class="ma-2" text icon color="blue lighten-2" @click="logout()">
+                  <v-icon>mdi-thumb-up</v-icon>
+                </v-btn>
               </div>
               <v-avatar size="36" class="mr-3">
                 <img
@@ -59,7 +62,11 @@ export default {
     return {};
   },
   methods: {
-    ...mapMutations([]),
+    ...mapMutations(["resetState"]),
+    logout() {
+      this.resetState();
+      this.$router.push({ name: "Login" });
+    },
   },
   computed: {
     ...mapGetters(["getModulos", "getUsuario", "getFinca"]),

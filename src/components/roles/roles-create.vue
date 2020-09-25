@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 import { Helpers } from "../../mixins/helpers";
 import RolesService from "../../services/roles.service";
 export default {
@@ -50,8 +49,6 @@ export default {
       rolData: {
         id: 0,
         rol: "",
-        finca_id: null,
-        usuario_id: null,
       },
       permisoSelected: [],
     };
@@ -69,20 +66,14 @@ export default {
         .then((result) => {
           this.rolData.id = result.data.data.rol.id;
           this.rolData.rol = result.data.data.rol.rol;
-          this.rolData.finca_id = result.data.data.rol.finca_id;
-          this.rolData.usuario_id = this.getUsuario.id;
           this.permisoSelected = result.data.data.permisos;
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.rolData.finca_id = this.getFinca.id;
-      this.rolData.usuario_id = this.getUsuario.id;
     }
   },
   methods: {
-    ...mapMutations([]),
     recuperarPermisos() {
       this.rolesService
         .getAllPermisos()
@@ -148,9 +139,6 @@ export default {
         }, 2000);
       }
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario"]),
   },
 };
 </script>

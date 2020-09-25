@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import CaloresService from "../../services/calores.service";
 export default {
@@ -99,8 +98,6 @@ export default {
         observaciones: "",
         en_calor: 0,
         post_inseminacion: 0,
-        finca_id: null,
-        usuario_id: null,
       },
       menu: false,
       animales: [],
@@ -119,29 +116,16 @@ export default {
         .then((result) => {
           this.calorData = result.data.data;
           this.calorData["id"] = this.$route.params.id;
-          this.calorData["finca_id"] = this.getFinca.id;
-          this.calorData["usuario_id"] = this.getUsuario.id;
-          this.calorData["token"] = this.getToken;
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.calorData["finca_id"] = this.getFinca.id;
-      this.calorData["usuario_id"] = this.getUsuario.id;
-      this.calorData["token"] = this.getToken;
     }
   },
   methods: {
-    ...mapMutations([]),
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
           this.animales = result.data.data;
         })
@@ -180,9 +164,6 @@ export default {
         textUno.indexOf(searchText) > -1 || textDos.indexOf(searchText) > -1
       );
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

@@ -1,10 +1,7 @@
 import axios from "axios";
 export default class EnfermedadesService {
-  getAllEnfermedades(data) {
-    return axios.post(
-      process.env.VUE_APP_API_PUBLIC + "enfermedades/all/",
-      data
-    );
+  getAllEnfermedades() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "enfermedades/");
   }
   createEnfermedad(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "enfermedades/", data);

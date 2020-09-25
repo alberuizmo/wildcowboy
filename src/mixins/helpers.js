@@ -45,5 +45,8 @@ export const Helpers = {
           .substring(2, 13)
       );
     },
+    formatFecha(fecha) {
+      return this.$moment(fecha).format("DD/MM/YYYY");
+    },
   },
 };

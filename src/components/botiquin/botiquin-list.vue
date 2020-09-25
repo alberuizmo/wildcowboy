@@ -5,17 +5,26 @@
         <v-card-title>
           <div style="width:100%">
             <v-toolbar flat color="white">
-              <v-toolbar-title>Listado de medicamentos en el botiquín</v-toolbar-title>
+              <v-toolbar-title>Medicamentos</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <template>
-                <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  @click="$router.push({name:'BotiquinCreate'})"
-                >Nuevo reporte</v-btn>
-              </template>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="$router.push({name:'BotiquinCreate'})"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <span>Nueva medicina</span>
+              </v-tooltip>
             </v-toolbar>
           </div>
           <div style="width:100%">
@@ -33,10 +42,10 @@
             <span v-bind:class="{ alert: item.cantidad<=item.alerta }">{{item.cantidad}}</span>
             <span class="alert ml-2" v-if="item.cantidad<=item.alerta">Alerta</span>
           </template>
-          <template v-slot:item.actions="{ item }">
+          <!-- <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-          </template>
+          </template>-->
         </v-data-table>
       </v-card>
     </v-col>
@@ -56,6 +65,7 @@ export default {
       botiquinService: null,
       search: "",
       headers: [
+        { text: "Código", value: "codigo" },
         { text: "Medicina", value: "medicina" },
         { text: "Cantidad", value: "cantidad" },
         { text: "Unidades", value: "unidades" },

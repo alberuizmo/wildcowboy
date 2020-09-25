@@ -3,10 +3,10 @@ import router from "../router/router";
 import { store } from "../store/store";
 axios.interceptors.request.use(
   function(config) {
-    /* const token = store.getters.getDataUser.access_token;
+    const token = store.getters.getToken;
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    } */
+      config.headers.authorization = token;
+    }
     return config;
   },
   function(err) {
@@ -19,10 +19,10 @@ axios.interceptors.response.use(
     return response;
   },
   function(error) {
-    /* if (error.response.status == "401") {
+    if (error.response.status == "403") {
       store.commit("resetState");
       router.push("/login");
-    } */
+    }
     return Promise.reject(error);
   }
 );

@@ -32,6 +32,7 @@
             hint="Cantidad de crias"
             persistent-hint
             min="1"
+            max="2"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6" md="3">
@@ -75,7 +76,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import PartosService from "../../services/partos.service";
 export default {
@@ -92,8 +92,6 @@ export default {
         hijos: 1,
         fecha: null,
         observaciones: "",
-        finca_id: null,
-        usuario_id: null,
       },
       menu: false,
       animales: [],
@@ -112,29 +110,16 @@ export default {
         .then((result) => {
           this.partoData = result.data.data;
           this.partoData["id"] = this.$route.params.id;
-          this.partoData["finca_id"] = this.getFinca.id;
-          this.partoData["usuario_id"] = this.getUsuario.id;
-          this.partoData["token"] = this.getToken;
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.partoData["finca_id"] = this.getFinca.id;
-      this.partoData["usuario_id"] = this.getUsuario.id;
-      this.partoData["token"] = this.getToken;
     }
   },
   methods: {
-    ...mapMutations([]),
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
           this.animales = result.data.data;
         })
@@ -173,9 +158,6 @@ export default {
         textUno.indexOf(searchText) > -1 || textDos.indexOf(searchText) > -1
       );
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

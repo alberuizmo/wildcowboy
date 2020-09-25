@@ -79,6 +79,89 @@
         <v-col cols="12" sm="6" md="3">
           <v-switch v-model="notificar" color="primary" class="mx-2" label="Enviar Notificación"></v-switch>
         </v-col>
+        <v-col cols="12" sm="6" md="6">
+          <v-text-field
+            label="Tratamiento"
+            v-model="enfermedadData.tratamiento"
+            hint="Tratamiento actual"
+            persistent-hint
+          ></v-text-field>
+        </v-col>
+        <v-row class="formulario">
+          <v-col cols="12">Formulario de sintomatología</v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.come"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.come==0?'No ':'Si'} come`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.bebe"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.bebe==0?'No ':'Si'} bebe`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.camina"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.camina==0?'No ':'Si '}puede caminar`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.de_pie"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.de_pie==0?'No ':'Si '}se pone de pie`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.fiebre"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.fiebre==0?'No ':'Si '}tiene fiebre`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.defeca"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.defeca==0?'No ':'Si '}defeca`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.baja_produccion"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.baja_produccion==0?'Producción normal':'Baja producción'}`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.herida"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.herida==0?'No ':'Si '}presenta alguna herida`"
+            ></v-switch>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-switch
+              v-model="enfermedadData.emergencia"
+              color="primary"
+              class="mx-2"
+              :label="`${enfermedadData.emergencia==0?'No ':'Si '}es una emergencia?`"
+            ></v-switch>
+          </v-col>
+        </v-row>
       </v-row>
     </v-col>
     <v-col cols="12">
@@ -94,7 +177,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import EnfermedadesService from "../../services/enfermedades.service";
 export default {
@@ -112,8 +194,16 @@ export default {
         sintomas: null,
         fecha: null,
         observaciones: "",
-        finca_id: null,
-        usuario_id: null,
+        tratamiento: "",
+        come: 0,
+        bebe: 0,
+        camina: 0,
+        de_pie: 0,
+        fiebre: 0,
+        defeca: 0,
+        baja_produccion: 0,
+        herida: 0,
+        emergencia: 0,
       },
       menu: false,
       animales: [],
@@ -133,29 +223,16 @@ export default {
         .then((result) => {
           this.enfermedadData = result.data.data;
           this.enfermedadData["id"] = this.$route.params.id;
-          this.enfermedadData["finca_id"] = this.getFinca.id;
-          this.enfermedadData["usuario_id"] = this.getUsuario.id;
-          this.enfermedadData["token"] = this.getToken;
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.enfermedadData["finca_id"] = this.getFinca.id;
-      this.enfermedadData["usuario_id"] = this.getUsuario.id;
-      this.enfermedadData["token"] = this.getToken;
     }
   },
   methods: {
-    ...mapMutations([]),
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
           this.animales = result.data.data;
         })
@@ -195,10 +272,14 @@ export default {
       );
     },
   },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
-  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.formulario {
+  border: 1px solid gray;
+  margin: 9px;
+  border-radius: 13px;
+  margin-top: 30px;
+}
+</style>

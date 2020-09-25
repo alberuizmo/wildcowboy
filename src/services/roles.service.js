@@ -1,7 +1,10 @@
 import axios from "axios";
 export default class RolesService {
-  getAllRoles(data) {
-    return axios.post(process.env.VUE_APP_API_PUBLIC + "roles/all/", data);
+  getAllRoles() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "roles/");
+  }
+  getRolById(id) {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "roles/" + id);
   }
   createRol(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "roles/create/", data);
@@ -9,16 +12,13 @@ export default class RolesService {
   createRolPermiso(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "roles/permisos/", data);
   }
+  getAllPermisos() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "permisos/");
+  }
   editRol(data) {
     return axios.put(process.env.VUE_APP_API_PUBLIC + "roles/", data);
   }
-  getRolById(id) {
-    return axios.get(process.env.VUE_APP_API_PUBLIC + "roles/" + id);
-  }
   deleteRol(id) {
     return axios.delete(process.env.VUE_APP_API_PUBLIC + "roles/" + id);
-  }
-  getAllPermisos() {
-    return axios.get(process.env.VUE_APP_API_PUBLIC + "permisos/");
   }
 }

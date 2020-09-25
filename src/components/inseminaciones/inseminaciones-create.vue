@@ -28,7 +28,7 @@
           <v-autocomplete
             :items="animales.filter(item=>item.sexo==1)"
             :filter="customFilterDonante"
-            label="Animal Donante"
+            label="Reproductor"
             v-model="inseminacionData.animal_donante_id"
             item-value="id"
           >
@@ -68,7 +68,22 @@
             persistent-hint
           ></v-text-field>
         </v-col>
-
+        <v-col cols="12" sm="6" md="3">
+          <v-switch
+            v-model="inseminacionData.artificial"
+            color="primary"
+            class="mx-2"
+            label="Inseminación Arficial?"
+          ></v-switch>
+        </v-col>
+        <v-col cols="12" sm="6" md="3" v-if="inseminacionData.artificial==1">
+          <v-text-field
+            label="Codigo de pajilla"
+            v-model="inseminacionData.codigo_pajilla"
+            hint="Codigo de pajilla"
+            persistent-hint
+          ></v-text-field>
+        </v-col>
         <v-col cols="12" sm="6" md="3">
           <v-menu
             v-model="menu"
@@ -120,7 +135,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import InseminacionesService from "../../services/inseminaciones.service";
 export default {
@@ -139,8 +153,8 @@ export default {
         donante_nombre: null,
         fecha: null,
         observaciones: "",
-        finca_id: null,
-        usuario_id: null,
+        codigo_pajilla: "",
+        artificial: 0,
       },
       menu: false,
       animales: [],
@@ -152,7 +166,6 @@ export default {
   },
   mounted() {
     this.obtenerAnimales();
-
     if (this.$route.params.id) {
       this.type = "edit";
       this.inseminacionesService
@@ -160,29 +173,16 @@ export default {
         .then((result) => {
           this.inseminacionData = result.data.data;
           this.inseminacionData["id"] = this.$route.params.id;
-          this.inseminacionData["finca_id"] = this.getFinca.id;
-          this.inseminacionData["usuario_id"] = this.getUsuario.id;
-          this.inseminacionData["token"] = this.getToken;
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.inseminacionData["finca_id"] = this.getFinca.id;
-      this.inseminacionData["usuario_id"] = this.getUsuario.id;
-      this.inseminacionData["token"] = this.getToken;
     }
   },
   methods: {
-    ...mapMutations([]),
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
           this.animales = result.data.data;
         })
@@ -194,7 +194,6 @@ export default {
         let animalDonante = this.animales.filter(
           (item) => item.id == this.inseminacionData.animal_donante_id
         );
-        console.log(animalDonante);
         this.inseminacionData.donante_nombre = animalDonante[0].nombre;
         this.inseminacionData.donante_identificacion =
           animalDonante[0].identificacion;
@@ -241,9 +240,6 @@ export default {
         textUno.indexOf(searchText) > -1 || textDos.indexOf(searchText) > -1
       );
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

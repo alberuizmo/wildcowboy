@@ -1,7 +1,7 @@
 import axios from "axios";
 export default class CaloresService {
-  getAllCalores(data) {
-    return axios.post(process.env.VUE_APP_API_PUBLIC + "calores/all/", data);
+  getAllCalores() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "calores/");
   }
   createCalor(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "calores/", data);

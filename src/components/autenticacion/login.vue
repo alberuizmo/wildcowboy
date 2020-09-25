@@ -27,43 +27,46 @@
           <p class="text-right link">Recuperar contraseña</p>
           <p class="text-right link" @click="irRegistro()">Registrate</p>
           <p class="text-right">
-            <v-btn
-              color="primary"
-              @click="acceder()"
-              :loading="loading"
-              :disabled="loading"
-              >Acceder</v-btn
-            >
+            <v-btn color="primary" @click="acceder()" :loading="loading" :disabled="loading">Acceder</v-btn>
           </p>
         </v-col>
         <v-col cols="3" class="d-flex justify-center">
           <img src="../../assets/img/logo-italcol.png" height="120" />
         </v-col>
       </v-row>
+      <v-snackbar v-model="snackbar" :color="color">
+        {{ text }}
+        <template v-slot:action="{ attrs }">
+          <v-btn text v-bind="attrs" @click="snackbar = false">Cerrar</v-btn>
+        </template>
+      </v-snackbar>
     </v-card-text>
   </div>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
-import AuthServices from "../../services/auth.service";
+import UsersService from "../../services/users.service";
 export default {
   name: "login",
   data() {
     return {
+      snackbar: false,
+      text: "usuarios y/o password incorrecto",
+      color: "error",
       dataLogin: { username: "", password: "" },
       loading: false,
-      authServices: null,
+      usersService: null,
     };
   },
   created() {
-    this.authServices = new AuthServices();
+    this.usersService = new UsersService();
   },
   methods: {
     ...mapMutations(["setUsuario", "setFinca", "setToken"]),
     acceder() {
       this.loading = true;
-      this.authServices
+      this.usersService
         .login(this.dataLogin)
         .then((result) => {
           if (result.data.token != null) {
@@ -71,6 +74,8 @@ export default {
             this.setFinca(result.data.finca);
             this.setToken(result.data.token);
             this.$router.push({ name: "Modules" });
+          } else {
+            this.snackbar = true;
           }
           this.loading = false;
         })

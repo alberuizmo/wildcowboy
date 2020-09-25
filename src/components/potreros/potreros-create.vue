@@ -52,8 +52,6 @@ export default {
         id: 0,
         identificacion: null,
         nombre: "",
-        finca_id: null,
-        usuario_id: null,
       },
     };
   },
@@ -70,14 +68,8 @@ export default {
           this.potreroData.id = result.data.data.id;
           this.potreroData.identificacion = result.data.data.identificacion;
           this.potreroData.nombre = result.data.data.nombre;
-          this.potreroData.this.potreroData.finca_id =
-            result.data.data.finca_id;
-          this.potreroData.usuario_id = this.getUsuario.id;
         })
         .catch(() => {});
-    } else {
-      this.potreroData.finca_id = this.getFinca.id;
-      this.potreroData.usuario_id = this.getUsuario.id;
     }
   },
   methods: {

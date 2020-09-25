@@ -2,7 +2,21 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app clipped dark>
       <v-list dense>
-        <v-list-item link @click="$router.push({ name: 'PotrerosList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'DashboardGanaderia' }).catch(() => {})"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-view-dashboard</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          link
+          @click="$router.push({ name: 'PotrerosList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-gate</v-icon>
           </v-list-item-action>
@@ -10,7 +24,10 @@
             <v-list-item-title>Potreros</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'RolesList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'RolesList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-account-switch</v-icon>
           </v-list-item-action>
@@ -18,7 +35,10 @@
             <v-list-item-title>Roles</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'UsuariosList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'UsuariosList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-account-multiple</v-icon>
           </v-list-item-action>
@@ -26,7 +46,10 @@
             <v-list-item-title>Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'AnimalesList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'AnimalesList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-cow</v-icon>
           </v-list-item-action>
@@ -34,7 +57,10 @@
             <v-list-item-title>Animales</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'ActividadesList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'ActividadesList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-calendar</v-icon>
           </v-list-item-action>
@@ -55,7 +81,10 @@
             <v-list-item-title>Producción lechera</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'InseminacionesList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'InseminacionesList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-reproduction</v-icon>
           </v-list-item-action>
@@ -63,7 +92,10 @@
             <v-list-item-title>Inseminaciones</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'CaloresList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'CaloresList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-account-heart</v-icon>
           </v-list-item-action>
@@ -71,7 +103,10 @@
             <v-list-item-title>Calores</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'PartosList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'PartosList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-mother-nurse</v-icon>
           </v-list-item-action>
@@ -79,7 +114,10 @@
             <v-list-item-title>Partos</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'EnfermedadesList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'EnfermedadesList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-emoticon-sick</v-icon>
           </v-list-item-action>
@@ -87,7 +125,10 @@
             <v-list-item-title>Enfermedades</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'BotiquinList' }).catch(() => {})">
+        <v-list-item
+          link
+          @click="$router.push({ name: 'BotiquinList' }).catch(() => {})"
+        >
           <v-list-item-action>
             <v-icon>mdi-pharmacy</v-icon>
           </v-list-item-action>
@@ -95,39 +136,10 @@
             <v-list-item-title>Botiquin</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <!-- <v-list-item
-          link
-          @click="
-            $router.push({ name: 'ControlFertilityMain' }).catch(() => {})
-          "
-          ><v-list-item-action>
-            <v-icon>mdi-view-dashboard</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Control de Fertilidad</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>-->
-        <!--         <v-list-item link @click="$router.push({ name: 'RegisterBornMain' }).catch(() => {})">
-          <v-list-item-content>
-            <v-list-item-title>Registro Nacimiento</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
         <v-list-item
           link
-          @click="
-            $router.push({ name: 'ControlFertilityMain' }).catch(() => {})
-          "
+          @click="$router.push({ name: 'Modules' }).catch(() => {})"
         >
-          <v-list-item-content>
-            <v-list-item-title>Control de Fertilidad</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link @click="$router.push({ name: 'MilkProductionMain' }).catch(() => {})">
-          <v-list-item-content>
-            <v-list-item-title>Producción Lechera</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>-->
-        <v-list-item link @click="$router.push({ name: 'Modules' }).catch(() => {})">
           <v-list-item-action>
             <v-icon>mdi-arrow-left-bold-box</v-icon>
           </v-list-item-action>
@@ -138,21 +150,25 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block @click="$router.push({ name: 'Login' }).catch(() => {})">Logout</v-btn>
+          <v-btn block @click="logout()">Logout</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
     <v-app-bar app clipped-left color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <img src="../assets/img/circle-cropped.png" style="height:75%" class="mr-3" />
+      <img
+        src="../assets/img/circle-cropped.png"
+        style="height: 75%"
+        class="mr-3"
+      />
       <v-toolbar-title>Ganadería</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-avatar class="mr-3">
         <img
           :src="
             'https://ui-avatars.com/api/?name=' +
-              this.getUsuario.username +
-              '&background=0D8ABC&color=fff'
+            this.getUsuario.username +
+            '&background=0D8ABC&color=fff'
           "
         />
       </v-avatar>
@@ -164,17 +180,34 @@
       </v-container>
     </v-main>
     <v-footer dark app>
-      WILD COWBOY
+      <span class="mr-1 white--text"
+        >&copy; {{ new Date().getFullYear() }}</span
+      >
+      - WILD COWBOY
       <v-spacer></v-spacer>
-      <span class="ml-3 white--text">&copy; {{ new Date().getFullYear() }}</span>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            medium
+            v-bind="attrs"
+            v-on="on"
+            color="primary"
+            @click="logout()"
+            >mdi-arrow-right-circle</v-icon
+          >
+        </template>
+        <span>Logout</span>
+      </v-tooltip>
     </v-footer>
-    <v-snackbar :color="color" v-model="snackbar" :timeout="timeout">{{ text }}</v-snackbar>
+    <v-snackbar :color="color" v-model="snackbar" :timeout="timeout">{{
+      text
+    }}</v-snackbar>
   </v-app>
 </template>
 
 <script>
 import notificaciones from "./generales/notificaciones";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "mainlayout",
   components: { notificaciones },
@@ -186,10 +219,15 @@ export default {
     color: "success",
   }),
   methods: {
+    ...mapMutations(["resetState"]),
     mostrarMensaje(evento) {
       this.text = evento.text;
       this.snackbar = evento.snackbar;
       this.color = evento.color;
+    },
+    logout() {
+      this.resetState();
+      this.$router.push({ name: "Login" });
     },
   },
   computed: {

@@ -1,7 +1,7 @@
 import axios from "axios";
 export default class PotrerosService {
-  getAllPotreros(data) {
-    return axios.post(process.env.VUE_APP_API_PUBLIC + "potreros/all/", data);
+  getAllPotreros() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "potreros/");
   }
   createPotrero(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "potreros/", data);

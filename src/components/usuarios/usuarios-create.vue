@@ -111,7 +111,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 import { Helpers } from "../../mixins/helpers";
 import RolesService from "../../services/roles.service";
 import UsersService from "../../services/users.service";
@@ -138,7 +137,6 @@ export default {
         email: "",
         password: "",
         type: 0,
-        finca_id: null,
       },
       nombreRules: [
         (v) => !!v || "El nombre es requerido",
@@ -159,18 +157,11 @@ export default {
   },
   mounted() {
     if (this.$route.params.id) {
-      this.finca_id = this.getFinca.id;
-      this.usuario_id = this.getUsuario.id;
       this.recuperarDataUser();
-    } else {
-      this.finca_id = this.getFinca.id;
-      this.usuario_id = this.getUsuario.id;
-      this.usuario.finca_id = this.finca_id;
     }
     this.recuperarRoles();
   },
   methods: {
-    ...mapMutations([]),
     async recuperarDataUser() {
       this.type = "edit";
       let rol_id;
@@ -180,7 +171,6 @@ export default {
         .then((result) => {
           rol_id = result.data.data.rol_id;
           this.usuario = { ...result.data.data };
-          this.usuario.finca_id = this.finca_id;
         })
         .catch((err) => {
           console.log(err);
@@ -196,13 +186,8 @@ export default {
         });
     },
     recuperarRoles() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.rolesService
-        .getAllRoles(data)
+        .getAllRoles()
         .then((result) => {
           this.roles = result.data.data;
         })
@@ -224,7 +209,6 @@ export default {
         await this.usersService
           .createFincaUser({
             usuario_id,
-            finca_id: this.finca_id,
           })
           .then(() => {})
           .catch(() => {
@@ -252,64 +236,7 @@ export default {
           });
       }
       return false;
-      /* if (this.$refs.formUser.validate()) {
-        //usuario
-        this.usuario["finca_id"] = this.finca_id;
-        let usuario_id;
-        await this.usersService
-          .createUser(this.usuario)
-          .then((response) => {
-            usuario_id = response.data.id_creado;
-          })
-          .catch(() => {
-            return false;
-          });
-        //finca-Usuario
-        await this.usersService
-          .createFincaUser({
-            usuario_id,
-            finca_id: this.finca_id,
-          })
-          .then(() => {})
-          .catch(() => {
-            return false;
-          });
-        //rol-Usuario
-        await this.usersService
-          .createRolUser({
-            usuario_id,
-            rol_id: this.rol.id,
-          })
-          .then(() => {
-            let payload = {
-              text: "Registro creado exitosamente",
-              snackbar: true,
-              color: "success",
-            };
-            this.$emit("mostrarMensaje", payload);
-            setTimeout(() => {
-              this.$router.push({ name: "UsuariosList" });
-            }, 2000);
-          })
-          .catch(() => {
-            return false;
-          });
-      } else {
-        //hace rpeticion al servicio de edicion
-        let payload = {
-          text: "Registro editado exitosamente",
-          snackbar: true,
-          color: "success",
-        };
-        this.$emit("mostrarMensaje", payload);
-        setTimeout(() => {
-          this.$router.push({ name: "UsuariosList" });
-        }, 2000);
-      } */
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario"]),
   },
 };
 </script>

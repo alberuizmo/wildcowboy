@@ -1,43 +1,37 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
-
-//autenticacion
-import Login from "../components/autenticacion/login-main";
-
-//modulos y main
-import Modules from "../components/modules";
-import MainLayout from "../components/main-layout";
-
-//por prueba
-import ControlFertility from "../components/control-fertility/control-fertility";
-import ControlFertilityList from "../components/control-fertility/control-fertility-list";
-import ControlFertilityCreate from "../components/control-fertility/control-fertility-create";
-
-import ErrorPage from "../components/error-page";
-import ConstructionPage from "../components/construction-page";
-
+import { store } from "@/store/store";
 const routes = [
   {
     path: "",
     name: "Home",
-    component: Login,
+    redirect: { name: "Modules" },
   },
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: () => import("../components/autenticacion/login-main"),
+    meta: {
+      public: true,
+      soloCuandoNoEsteLogueado: true,
+    },
   },
   {
     path: "/modules",
     name: "Modules",
-    component: Modules,
+    component: () => import("../components/modules"),
   },
   {
     path: "/main",
     name: "Main",
-    component: MainLayout,
+    component: () => import("../components/main-layout"),
     children: [
+      {
+        path: "ganaderia",
+        name: "DashboardGanaderia",
+        component: () => import("../components/dashboard-ganaderia"),
+      },
       {
         path: "potreros",
         component: () => import("../components/potreros/potreros"),
@@ -164,7 +158,7 @@ const routes = [
         ],
       },
       {
-        path: "Calores",
+        path: "calores",
         component: () => import("../components/calores/calores"),
         children: [
           {
@@ -180,7 +174,7 @@ const routes = [
         ],
       },
       {
-        path: "Partos",
+        path: "partos",
         component: () => import("../components/partos/partos"),
         children: [
           {
@@ -196,7 +190,7 @@ const routes = [
         ],
       },
       {
-        path: "Enfermedades",
+        path: "enfermedades",
         component: () => import("../components/enfermedades/enfermedades"),
         children: [
           {
@@ -214,7 +208,7 @@ const routes = [
         ],
       },
       {
-        path: "Botiquin",
+        path: "botiquin",
         component: () => import("../components/botiquin/botiquin"),
         children: [
           {
@@ -229,47 +223,44 @@ const routes = [
           },
         ],
       },
-      {
-        path: "control-fertility",
-        component: ControlFertility,
-        children: [
-          {
-            path: "",
-            name: "ControlFertilityMain",
-            component: ControlFertilityList,
-          },
-          {
-            path: "list",
-            name: "ControlFertilityList",
-            component: ControlFertilityList,
-          },
-          {
-            path: "create/:id?",
-            name: "ControlFertilityCreate",
-            component: ControlFertilityCreate,
-          },
-        ],
-      },
     ],
   },
   {
     path: "/help-center",
     name: "Help",
-    component: ConstructionPage,
+    component: () => import("../components/construction-page"),
   },
   {
     path: "/tasks",
     name: "Tasks",
-    component: ConstructionPage,
+    component: () => import("../components/construction-page"),
   },
   {
     path: "**",
-    component: ErrorPage,
+    component: () => import("../components/error-page"),
+    meta: {
+      public: true,
+    },
   },
 ];
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const esPublico = to.matched.some((record) => record.meta.public);
+  const soloCuandoNoEsteLogueado = to.matched.some(
+    (record) => record.meta.soloCuandoNoEsteLogueado
+  );
+  const Logueado = store.state.token != null;
+  if (!esPublico && !Logueado) {
+    return next({ name: "Login" });
+  }
+  if (Logueado && soloCuandoNoEsteLogueado) {
+    return next({ name: "Modules" });
+  }
+  next();
 });
 
 export default router;

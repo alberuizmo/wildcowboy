@@ -167,6 +167,44 @@
           persistent-hint
         ></v-select>
       </v-col>
+      <v-col cols="12" sm="6" md="3">
+        <v-text-field label="Color" v-model="animal.color" hint="Color" persistent-hint></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Raza</th>
+                <th class="text-left">Porcentaje %</th>
+                <th class="text-left"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="text" v-model.trim="razaNueva" class="inputNuevo" />
+                </td>
+                <td>
+                  <input type="number" v-model.trim="porcentajeNueva" class="inputNuevo" />
+                </td>
+                <td>
+                  <v-icon @click="agregarFila()">mdi-content-save</v-icon>
+                </td>
+              </tr>
+              <tr v-for="(raza,index) in porcentajeRazas" :key="index">
+                <td>
+                  <span>{{ raza.raza }}</span>
+                </td>
+                <td>{{ raza.porcentaje }}</td>
+                <td>
+                  <v-icon @click="eliminarFila(index)">mdi-delete</v-icon>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-col>
     </v-row>
     <v-col cols="12" sm="6" md="3">
       <v-btn color="primary" dark class="ml-3" @click="guardar()">Guardar</v-btn>
@@ -176,7 +214,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import PotrerosService from "../../services/potreros.service";
 export default {
@@ -215,7 +252,6 @@ export default {
         nombre: "",
         potrero_id: null,
         sexo: null,
-        usuario_id: null,
         padre_identificacion: null,
         padre_nombre: null,
         madre_identificacion: null,
@@ -223,8 +259,12 @@ export default {
         vendedor_identificacion: null,
         vendedor_nombre: null,
         vendedor_telefono: null,
+        color: null,
+        razas: null,
       },
-      animalData: null,
+      porcentajeRazas: [],
+      razaNueva: "",
+      porcentajeNueva: 0,
     };
   },
   created() {
@@ -240,45 +280,50 @@ export default {
         .getAnimalById(this.$route.params.id)
         .then((result) => {
           this.animal = result.data.data;
-          this.animal.usuario_id = this.getUsuario.id;
+          this.porcentajeRazas =
+            this.animal.razas == null ? [] : JSON.parse(this.animal.razas);
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.animal.usuario_id = this.getUsuario.id;
     }
   },
   methods: {
-    ...mapMutations([]),
+    eliminarFila(index) {
+      this.porcentajeRazas.splice(index, 1);
+    },
+    agregarFila() {
+      if (this.razaNueva == "" || this.porcentajeNueva <= 0) {
+        return false;
+      }
+      this.porcentajeRazas.push({
+        raza: this.razaNueva,
+        porcentaje: this.porcentajeNueva,
+      });
+      this.razaNueva = "";
+      this.porcentajeNueva = 0;
+    },
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
           this.animales = result.data.data;
         })
         .catch(() => {});
     },
     recuperarPotreros() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.potrerosService
-        .getAllPotreros(data)
+        .getAllPotreros()
         .then((result) => {
-          console.log(result);
           this.potreros = result.data.data;
         })
         .catch(() => {});
     },
     guardar() {
+      this.animal.razas =
+        this.porcentajeRazas.length == 0
+          ? null
+          : JSON.stringify(this.porcentajeRazas);
       let payload = null;
       if (this.type == "create") {
         //hacer peticion a servicio de creacion
@@ -312,10 +357,13 @@ export default {
       }
     },
   },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
-  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.inputNuevo {
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+}
+</style>

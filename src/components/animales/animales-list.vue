@@ -5,17 +5,26 @@
         <v-card-title>
           <div style="width:100%">
             <v-toolbar flat color="white">
-              <v-toolbar-title>Listado de animales</v-toolbar-title>
+              <v-toolbar-title>Animales</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <template>
-                <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  @click="$router.push({name:'AnimalesCreate'})"
-                >Nuevo registro</v-btn>
-              </template>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="$router.push({name:'AnimalesCreate'})"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <span>Nuevo animal</span>
+              </v-tooltip>
             </v-toolbar>
           </div>
           <div style="width:100%">
@@ -29,19 +38,16 @@
           </div>
         </v-card-title>
         <v-data-table :headers="headers" :items="animales" :search="search">
-          <template v-slot:item.nacimiento="{ item }">{{formatFecha(item.nacimiento)}}</template>
-          <template v-slot:item.comprado="{ item }">{{item.comprado==1?"Comprado":"Nacido"}}</template>
-          <template v-slot:item.sexo="{ item }">{{item.sexo=="0"?"Hembra":"Macho"}}</template>
           <template
             v-slot:item.madre_id="{ item }"
           >{{item.madre_id?buscarPariente(item.madre_id):item.madre_nombre}}</template>
           <template
             v-slot:item.padre_id="{ item }"
           >{{item.madre_id?buscarPariente(item.padre_id):item.padre_nombre}}</template>
-          <template v-slot:item.actions="{ item }">
+          <!-- <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-          </template>
+          </template>-->
         </v-data-table>
       </v-card>
     </v-col>
@@ -50,10 +56,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import modalconfirm from "../generales/modalBoxConfirm";
 import AnimalesService from "../../services/animales.service";
+import { Helpers } from "../../mixins/helpers";
 export default {
+  mixins: [Helpers],
   components: { modalconfirm },
   name: "born-list",
   data() {
@@ -70,6 +77,7 @@ export default {
         { text: "Padre", value: "padre_id" },
         { text: "Madre", value: "madre_id" },
         { text: "Sexo", value: "sexo" },
+        { text: "Color", value: "color" },
         { text: "Potrero", value: "nombre_potrero" },
         { text: "Actions", value: "actions", sortable: false },
       ],
@@ -82,10 +90,6 @@ export default {
     this.obtenerAnimales();
   },
   methods: {
-    ...mapMutations([]),
-    formatFecha(fecha) {
-      return this.$moment(fecha).format("DD/MM/YYYY");
-    },
     buscarPariente(pariente_id) {
       let buscar = this.animales.filter((item) => {
         return item.id == pariente_id;
@@ -97,16 +101,15 @@ export default {
       }
     },
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
-          console.log(result);
-          this.animales = result.data.data;
+          this.animales = result.data.data.map((item) => {
+            item.comprado = item.comprado == 1 ? "Comprado" : "Nacido";
+            item.sexo = item.sexo = item.sexo == "0" ? "Hembra" : "Macho";
+            item.nacimiento = this.formatFecha(item.nacimiento);
+            return item;
+          });
         })
         .catch(() => {});
     },
@@ -128,9 +131,6 @@ export default {
           }
         });
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

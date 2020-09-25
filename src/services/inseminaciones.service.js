@@ -1,10 +1,7 @@
 import axios from "axios";
 export default class InseminacionesService {
   getAllinseminaciones(data) {
-    return axios.post(
-      process.env.VUE_APP_API_PUBLIC + "inseminaciones/all/",
-      data
-    );
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "inseminaciones/", data);
   }
   createInseminacion(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "inseminaciones/", data);

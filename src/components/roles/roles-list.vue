@@ -5,17 +5,26 @@
         <v-card-title>
           <div style="width:100%">
             <v-toolbar flat color="white">
-              <v-toolbar-title>Listado de roles</v-toolbar-title>
+              <v-toolbar-title>Roles</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <template>
-                <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  @click="$router.push({ name: 'RolesCreate' })"
-                >Nuevo rol</v-btn>
-              </template>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="$router.push({ name: 'RolesCreate' })"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <span>Nuevo rol</span>
+              </v-tooltip>
             </v-toolbar>
           </div>
           <div style="width:100%">
@@ -29,10 +38,10 @@
           </div>
         </v-card-title>
         <v-data-table :headers="headers" :items="roles" :search="search">
-          <template v-slot:item.actions="{ item }">
+          <!-- <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-          </template>
+          </template>-->
         </v-data-table>
       </v-card>
     </v-col>
@@ -41,7 +50,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import modalconfirm from "../generales/modalBoxConfirm";
 import RolesService from "../../services/roles.service";
 export default {
@@ -65,15 +73,9 @@ export default {
     this.recuperarRoles();
   },
   methods: {
-    ...mapMutations([]),
     recuperarRoles() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.rolesService
-        .getAllRoles(data)
+        .getAllRoles()
         .then((result) => {
           this.roles = result.data.data;
         })
@@ -96,9 +98,6 @@ export default {
           }
         });
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

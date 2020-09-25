@@ -8,6 +8,14 @@
       <v-row class="pl-3">
         <v-col cols="12" sm="6" md="3">
           <v-text-field
+            label="Código"
+            v-model="medicamentoData.codigo"
+            hint="Código"
+            persistent-hint
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-text-field
             label="Medicamento"
             v-model="medicamentoData.medicina"
             hint="Nombre de la medicina"
@@ -76,7 +84,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import AnimalesService from "../../services/animales.service";
 import BotiquinService from "../../services/botiquin.service";
 export default {
@@ -88,7 +95,7 @@ export default {
       type: "create",
       medicamentoData: {
         id: 0,
-        finca_id: null,
+        codigo: null,
         medicina: null,
         cantidad: 0,
         unidades: null,
@@ -96,7 +103,6 @@ export default {
         marca: null,
         alerta: 0,
         observaciones: "",
-        usuario_id: null,
       },
       animales: [],
     };
@@ -113,21 +119,13 @@ export default {
         .then((result) => {
           this.medicamentoData = result.data.data;
           this.medicamentoData["id"] = this.$route.params.id;
-          this.medicamentoData["finca_id"] = this.getFinca.id;
-          this.medicamentoData["usuario_id"] = this.getUsuario.id;
-          this.medicamentoData["token"] = this.getToken;
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      this.medicamentoData["finca_id"] = this.getFinca.id;
-      this.medicamentoData["usuario_id"] = this.getUsuario.id;
-      this.medicamentoData["token"] = this.getToken;
     }
   },
   methods: {
-    ...mapMutations([]),
     async guardar() {
       let payload = null;
       if (this.type == "create") {
@@ -153,9 +151,6 @@ export default {
         };
       }
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

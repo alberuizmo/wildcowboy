@@ -5,17 +5,26 @@
         <v-card-title>
           <div style="width:100%">
             <v-toolbar flat color="white">
-              <v-toolbar-title>Listado inseminaciones</v-toolbar-title>
+              <v-toolbar-title>Servicios</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <template>
-                <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  @click="$router.push({name:'InseminacionesCreate'})"
-                >Nuevo registro</v-btn>
-              </template>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="$router.push({name:'InseminacionesCreate'})"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <span>Nuevo servicio</span>
+              </v-tooltip>
             </v-toolbar>
           </div>
           <div style="width:100%">
@@ -29,13 +38,10 @@
           </div>
         </v-card-title>
         <v-data-table :headers="headers" :items="inseminacionesData" :search="search">
-          <template v-slot:item.fecha="{ item }">
-            <span>{{item.fecha | formatear_fecha}}</span>
-          </template>
-          <template v-slot:item.actions="{ item }">
+          <!-- <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-          </template>
+          </template>-->
         </v-data-table>
       </v-card>
     </v-col>
@@ -45,9 +51,10 @@
 
 <script>
 import modalconfirm from "../generales/modalBoxConfirm";
-import { mapGetters, mapMutations } from "vuex";
 import InseminacionesService from "../../services/inseminaciones.service";
+import { Helpers } from "../../mixins/helpers";
 export default {
+  mixins: [Helpers],
   components: { modalconfirm },
   name: "inseminaciones-list",
   data() {
@@ -59,6 +66,8 @@ export default {
         { text: "Animal Donante", value: "donante_nombre" },
         { text: "Fecha", value: "fecha" },
         { text: "Observaciones", value: "observaciones" },
+        { text: "Tipo de Inseminación", value: "arficial" },
+        { text: "Código Pajilla", value: "codigo_pajilla" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       inseminacionesData: [],
@@ -71,17 +80,15 @@ export default {
     this.recuperarInseminaciones();
   },
   methods: {
-    ...mapMutations(["deleteinseminacionesData"]),
     recuperarInseminaciones() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.inseminacionesService
-        .getAllinseminaciones(data)
+        .getAllinseminaciones()
         .then((result) => {
-          this.inseminacionesData = result.data.data;
+          this.inseminacionesData = result.data.data.map((item) => {
+            item.arficial = item.arficial == 0 ? "Monta Directa" : "Artificial";
+            item.fecha = this.formatFecha(item.fecha);
+            return item;
+          });
         })
         .catch(() => {});
     },
@@ -102,9 +109,6 @@ export default {
           }
         });
     },
-  },
-  computed: {
-    ...mapGetters(["getFinca", "getUsuario", "getToken"]),
   },
 };
 </script>

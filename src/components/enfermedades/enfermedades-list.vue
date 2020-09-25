@@ -5,17 +5,26 @@
         <v-card-title>
           <div style="width:100%">
             <v-toolbar flat color="white">
-              <v-toolbar-title>Listado de enfermedades reportadas</v-toolbar-title>
+              <v-toolbar-title>Enfermedades</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <template>
-                <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  @click="$router.push({name:'EnfermedadesCreate'})"
-                >Nuevo reporte</v-btn>
-              </template>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="$router.push({name:'EnfermedadesCreate'})"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <span>Nueva enfermedad</span>
+              </v-tooltip>
             </v-toolbar>
           </div>
           <div style="width:100%">
@@ -29,13 +38,10 @@
           </div>
         </v-card-title>
         <v-data-table :headers="headers" :items="enfermedadesData" :search="search">
-          <template v-slot:item.fecha="{ item }">
-            <span>{{item.fecha | formatear_fecha}}</span>
-          </template>
-          <template v-slot:item.actions="{ item }">
+          <!-- <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-          </template>
+          </template>-->
         </v-data-table>
       </v-card>
     </v-col>
@@ -47,7 +53,9 @@
 import modalconfirm from "../generales/modalBoxConfirm";
 import { mapGetters, mapMutations } from "vuex";
 import EnfermedadesService from "../../services/enfermedades.service";
+import { Helpers } from "../../mixins/helpers";
 export default {
+  mixins: [Helpers],
   components: { modalconfirm },
   name: "enfermedades-list",
   data() {
@@ -74,15 +82,13 @@ export default {
   methods: {
     ...mapMutations([]),
     recuperarEnfermedades() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.enfermedadesService
-        .getAllEnfermedades(data)
+        .getAllEnfermedades()
         .then((result) => {
-          this.enfermedadesData = result.data.data;
+          this.enfermedadesData = result.data.data.map((item) => {
+            item.fecha = this.formatFecha(item.fecha);
+            return item;
+          });
         })
         .catch(() => {});
     },

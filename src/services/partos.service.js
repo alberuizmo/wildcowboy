@@ -1,7 +1,7 @@
 import axios from "axios";
 export default class PartosService {
-  getAllPartos(data) {
-    return axios.post(process.env.VUE_APP_API_PUBLIC + "partos/all/", data);
+  getAllPartos() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "partos/");
   }
   createParto(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "partos/", data);

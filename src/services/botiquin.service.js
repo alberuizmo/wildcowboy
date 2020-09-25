@@ -1,7 +1,7 @@
 import axios from "axios";
 export default class BotiquinService {
-  getAllMedicinas(data) {
-    return axios.post(process.env.VUE_APP_API_PUBLIC + "botiquin/all/", data);
+  getAllMedicinas() {
+    return axios.get(process.env.VUE_APP_API_PUBLIC + "botiquin/");
   }
   createMedicina(data) {
     return axios.post(process.env.VUE_APP_API_PUBLIC + "botiquin/", data);
