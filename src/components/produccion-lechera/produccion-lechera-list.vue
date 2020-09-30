@@ -3,7 +3,7 @@
     <v-col>
       <v-card>
         <v-card-title>
-          <div style="width:100%">
+          <div style="width: 100%">
             <v-toolbar flat color="white">
               <v-toolbar-title>Control de producción lechera</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -13,20 +13,31 @@
                   color="primary"
                   dark
                   class="mb-2 mr-2"
-                  @click="$router.push({name:'ProduccionLecheraCreateFast'})"
-                >Cargar Rapida</v-btn>
+                  @click="$router.push({ name: 'ProduccionLecheraReport' })"
+                  >Reporte de producción</v-btn
+                >
+              </template>
+              <template>
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2 mr-2"
+                  @click="$router.push({ name: 'ProduccionLecheraCreateFast' })"
+                  >Cargar Rapida</v-btn
+                >
               </template>
               <template>
                 <v-btn
                   color="primary"
                   dark
                   class="mb-2"
-                  @click="$router.push({name:'ProduccionLecheraCreate'})"
-                >Nuevo registro</v-btn>
+                  @click="$router.push({ name: 'ProduccionLecheraCreate' })"
+                  >Nuevo registro</v-btn
+                >
               </template>
             </v-toolbar>
           </div>
-          <div style="width:100%">
+          <div style="width: 100%">
             <v-text-field
               v-model="search"
               append-icon="search"
@@ -35,7 +46,7 @@
               hide-details
             ></v-text-field>
           </div>
-          <div style="width:100%">
+          <div style="width: 100%">
             <v-select
               :items="semanas"
               label="Semana"
@@ -48,19 +59,65 @@
             ></v-select>
           </div>
         </v-card-title>
-        <v-data-table :headers="headers" :items="produccionLecheraFiltrada" :search="search">
+        <v-data-table
+          :headers="headers"
+          :items="produccionLecheraFiltrada"
+          :search="search"
+        >
           <template v-slot:header>
             <thead>
               <tr>
                 <th></th>
                 <th></th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Lunes</th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Martes</th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Miercoles</th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Jueves</th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Viernes</th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Sabado</th>
-                <th colspan="2" class="text-center" style="border:1px solid #dbdbdb">Domingo</th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Lunes
+                </th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Martes
+                </th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Miercoles
+                </th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Jueves
+                </th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Viernes
+                </th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Sabado
+                </th>
+                <th
+                  colspan="2"
+                  class="text-center"
+                  style="border: 1px solid #dbdbdb"
+                >
+                  Domingo
+                </th>
               </tr>
             </thead>
           </template>

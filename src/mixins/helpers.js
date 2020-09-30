@@ -39,14 +39,23 @@ export const Helpers = {
       return (
         Math.random()
           .toString(36)
-          .substring(2, 13) +
+          .substring(2, 5) +
         Math.random()
           .toString(36)
-          .substring(2, 13)
+          .substring(2, 5)
       );
     },
     formatFecha(fecha) {
       return this.$moment(fecha).format("DD/MM/YYYY");
+    },
+    fechaAleatoria(start, end) {
+      let fecha = new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+      );
+      return fecha;
+    },
+    numeroRandom(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
     },
   },
 };

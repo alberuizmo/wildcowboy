@@ -212,12 +212,17 @@ export default {
   name: "mainlayout",
   components: { notificaciones },
   data: () => ({
-    drawer: null,
+    drawer: false,
     snackbar: false,
     text: "My timeout is set to 2000.",
     timeout: 2000,
     color: "success",
   }),
+  mounted() {
+    setTimeout(() => {
+      this.drawer = true;
+    }, 100);
+  },
   methods: {
     ...mapMutations(["resetState"]),
     mostrarMensaje(evento) {

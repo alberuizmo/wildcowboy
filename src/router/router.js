@@ -137,6 +137,14 @@ const routes = [
                 "../components/produccion-lechera/produccion-lechera-create-fast"
               ),
           },
+          {
+            path: "report/",
+            name: "ProduccionLecheraReport",
+            component: () =>
+              import(
+                "../components/produccion-lechera/produccion-lechera-reporte"
+              ),
+          },
         ],
       },
       {

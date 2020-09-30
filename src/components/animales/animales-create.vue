@@ -11,7 +11,7 @@
           v-model="animal.codigo"
           hint="Ingresa el codigo del animal"
           persistent-hint
-          :rules="[v => !!v || 'El campo es requerido']"
+          :rules="[(v) => !!v || 'El campo es requerido']"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="6" md="3">
@@ -19,7 +19,7 @@
           label="Identificación"
           v-model="animal.identificacion"
           hint="Ingresa la identificación del animal"
-          :rules="[v => !!v || 'El campo es requerido']"
+          :rules="[(v) => !!v || 'El campo es requerido']"
           persistent-hint
         ></v-text-field>
       </v-col>
@@ -28,7 +28,7 @@
           label="Nombre"
           v-model="animal.nombre"
           hint="Ingresa el nombre del animal"
-          :rules="[v => !!v || 'El campo es requerido']"
+          :rules="[(v) => !!v || 'El campo es requerido']"
           persistent-hint
         ></v-text-field>
       </v-col>
@@ -43,9 +43,9 @@
           persistent-hint
         ></v-select>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==0">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 0">
         <v-select
-          :items="animales.filter(item=>item.sexo=='0')"
+          :items="animales.filter((item) => item.sexo == '0')"
           label="Madre"
           v-model="animal.madre_id"
           item-text="nombre"
@@ -54,9 +54,9 @@
           persistent-hint
         ></v-select>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==0">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 0">
         <v-select
-          :items="animales.filter(item=>item.sexo=='1')"
+          :items="animales.filter((item) => item.sexo == '1')"
           label="Padre"
           v-model="animal.padre_id"
           item-text="nombre"
@@ -65,7 +65,7 @@
           persistent-hint
         ></v-select>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Identificación Padre"
           v-model="animal.padre_identificacion"
@@ -73,7 +73,7 @@
           persistent-hint
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Nombre Padre"
           v-model="animal.padre_nombre"
@@ -81,7 +81,7 @@
           persistent-hint
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Identificación Madre"
           v-model="animal.madre_identificacion"
@@ -89,7 +89,7 @@
           persistent-hint
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Nombre Madre"
           v-model="animal.madre_nombre"
@@ -97,7 +97,7 @@
           persistent-hint
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Identificación Vendedor"
           v-model="animal.vendedor_identificacion"
@@ -105,7 +105,7 @@
           persistent-hint
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Nombre Vendedor"
           v-model="animal.vendedor_nombre"
@@ -113,7 +113,7 @@
           persistent-hint
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="3" v-if="animal.comprado==1">
+      <v-col cols="12" sm="6" md="3" v-if="animal.comprado == 1">
         <v-text-field
           label="Teléfono Vendedor"
           v-model="animal.vendedor_telefono"
@@ -142,7 +142,12 @@
               persistent-hint
             ></v-text-field>
           </template>
-          <v-date-picker :max="maxDate" v-model="animal.nacimiento" no-title @input="menu = false"></v-date-picker>
+          <v-date-picker
+            :max="maxDate"
+            v-model="animal.nacimiento"
+            no-title
+            @input="menu = false"
+          ></v-date-picker>
         </v-menu>
       </v-col>
       <v-col cols="12" sm="6" md="3">
@@ -168,7 +173,12 @@
         ></v-select>
       </v-col>
       <v-col cols="12" sm="6" md="3">
-        <v-text-field label="Color" v-model="animal.color" hint="Color" persistent-hint></v-text-field>
+        <v-text-field
+          label="Color"
+          v-model="animal.color"
+          hint="Color"
+          persistent-hint
+        ></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
         <v-simple-table>
@@ -183,16 +193,24 @@
             <tbody>
               <tr>
                 <td>
-                  <input type="text" v-model.trim="razaNueva" class="inputNuevo" />
+                  <input
+                    type="text"
+                    v-model.trim="razaNueva"
+                    class="inputNuevo"
+                  />
                 </td>
                 <td>
-                  <input type="number" v-model.trim="porcentajeNueva" class="inputNuevo" />
+                  <input
+                    type="number"
+                    v-model.trim="porcentajeNueva"
+                    class="inputNuevo"
+                  />
                 </td>
                 <td>
                   <v-icon @click="agregarFila()">mdi-content-save</v-icon>
                 </td>
               </tr>
-              <tr v-for="(raza,index) in porcentajeRazas" :key="index">
+              <tr v-for="(raza, index) in porcentajeRazas" :key="index">
                 <td>
                   <span>{{ raza.raza }}</span>
                 </td>
@@ -207,8 +225,16 @@
       </v-col>
     </v-row>
     <v-col cols="12" sm="6" md="3">
-      <v-btn color="primary" dark class="ml-3" @click="guardar()">Guardar</v-btn>
-      <v-btn color="error" dark class="ml-3" @click="$router.push({name:'AnimalesList'})">Cancelar</v-btn>
+      <v-btn color="primary" dark class="ml-3" @click="guardar()"
+        >Guardar</v-btn
+      >
+      <v-btn
+        color="error"
+        dark
+        class="ml-3"
+        @click="$router.push({ name: 'AnimalesList' })"
+        >Cancelar</v-btn
+      >
     </v-col>
   </v-row>
 </template>
@@ -260,7 +286,7 @@ export default {
         vendedor_nombre: null,
         vendedor_telefono: null,
         color: null,
-        razas: null,
+        raza: null,
       },
       porcentajeRazas: [],
       razaNueva: "",
@@ -320,7 +346,7 @@ export default {
         .catch(() => {});
     },
     guardar() {
-      this.animal.razas =
+      this.animal.raza =
         this.porcentajeRazas.length == 0
           ? null
           : JSON.stringify(this.porcentajeRazas);
