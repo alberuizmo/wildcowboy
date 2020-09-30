@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c5af7"],{"3fc1":function(e,n,t){"use strict";t.r(n);var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("router-view",{on:{mostrarMensaje:function(n){return e.$emit("mostrarMensaje",n)}}})},a=[],c={name:"enfermedades",data:function(){return{}}},u=c,o=t("2877"),s=Object(o["a"])(u,r,a,!1,null,"18b0c058",null);n["default"]=s.exports}}]);
-//# sourceMappingURL=chunk-2d0c5af7.5482ff94.js.map

@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0e8cc9"],{"8b8a":function(n,e,t){"use strict";t.r(e);var r=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("router-view",{on:{mostrarMensaje:function(e){return n.$emit("mostrarMensaje",e)}}})},a=[],c={name:"inseminaciones",data:function(){return{}}},o=c,s=t("2877"),u=Object(s["a"])(o,r,a,!1,null,"16ff66a4",null);e["default"]=u.exports}}]);
-//# sourceMappingURL=chunk-2d0e8cc9.3f3dc6d6.js.map

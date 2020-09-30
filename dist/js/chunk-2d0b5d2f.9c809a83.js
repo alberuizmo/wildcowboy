@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0b5d2f"],{"1b19":function(e,n,r){"use strict";r.r(n);var t=function(){var e=this,n=e.$createElement,r=e._self._c||n;return r("router-view",{on:{mostrarMensaje:function(n){return e.$emit("mostrarMensaje",n)}}})},a=[],o={name:"produccion_lechera",data:function(){return{}}},u=o,c=r("2877"),s=Object(c["a"])(u,t,a,!1,null,"9f4f0eae",null);n["default"]=s.exports}}]);
-//# sourceMappingURL=chunk-2d0b5d2f.9c809a83.js.map
