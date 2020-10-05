@@ -97,7 +97,7 @@
         color="error"
         dark
         class="ml-3"
-        @click="$router.push({ name: 'BotiquinList' })"
+        @click="$router.push({ name: 'MovimientosConsumiblesList' })"
         >Cancelar</v-btn
       >
     </v-col>

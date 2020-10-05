@@ -50,6 +50,12 @@
                   </div>
                   <div class="divName">{{ modulo.caption }}</div>
                 </li>
+                <li @click="logout" class="botonModulo botonLogout">
+                  <div class="divIcon">
+                    <v-icon medium color="white">mdi-logout-variant</v-icon>
+                  </div>
+                  <div class="divName">Salir</div>
+                </li>
               </ul>
             </v-col>
           </v-row>
@@ -149,5 +155,10 @@ export default {
 .divUser {
   display: flex;
   flex-direction: row-reverse;
+}
+.botonLogout:hover {
+  width: 52%;
+  background-color: #8f4f00;
+  font-weight: bold;
 }
 </style>

@@ -43,13 +43,15 @@
         @click="guardarInformacion()"
         :loading="loading"
         :disabled="loading"
-      >Guardar</v-btn>
+        >Guardar</v-btn
+      >
       <v-btn
         color="error"
         dark
         class="ml-3"
-        @click="$router.push({name:'ProduccionLecheraList'})"
-      >Cancelar</v-btn>
+        @click="$router.push({ name: 'ProduccionLecheraList' })"
+        >Cancelar</v-btn
+      >
     </v-col>
     <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
       {{ snackText }}
@@ -105,13 +107,8 @@ export default {
   methods: {
     ...mapMutations([]),
     obtenerAnimales() {
-      let data = {
-        finca_id: this.getFinca.id,
-        usuario_id: this.getUsuario.id,
-        token: this.getToken,
-      };
       this.animalesService
-        .getAllAnimales(data)
+        .getAllAnimales()
         .then((result) => {
           this.animales = result.data.data.filter((item) => {
             return item.sexo == 0;

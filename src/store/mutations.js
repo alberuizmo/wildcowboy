@@ -20,10 +20,38 @@ const getDefaultState = () => {
       },
       {
         id: 3,
+        caption: "Agro",
+        value: "agro",
+        urlName: "DashboardAgro",
+        icon: "mdi-sprout-outline",
+      },
+      {
+        id: 4,
+        caption: "Equinos",
+        value: "equinos",
+        urlName: "DashboardEquinos",
+        icon: "mdi-horse",
+      },
+      {
+        id: 5,
         caption: "Ganaderia",
         value: "ganaderia",
         urlName: "DashboardGanaderia",
         icon: "mdi-cow",
+      },
+      {
+        id: 6,
+        caption: "Administración",
+        value: "administracion",
+        urlName: "administracion",
+        icon: "mdi-account-key",
+      },
+      {
+        id: 7,
+        caption: "MarkerPlace",
+        value: "marketplace",
+        urlName: "DashboardMarketplace",
+        icon: "mdi-storefront",
       },
     ],
   };
