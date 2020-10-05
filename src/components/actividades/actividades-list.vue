@@ -112,6 +112,7 @@ export default {
       selectedElement: null,
       selectedOpen: false,
       animalesIndexados: {},
+      iniciando: true,
     };
   },
   created() {
@@ -121,11 +122,27 @@ export default {
     this.caloresService = new CaloresService();
   },
   mounted() {
-    this.obtenerAnimales();
+    /*this.obtenerAnimales();
     this.obtenerPartos();
     this.obtenerInseminaciones();
-    this.obtenerCalores();
+    this.obtenerCalores(); */
     this.valorCalendario = new Date();
+    this.getActividadesMesTernero(
+      this.$moment(this.valorCalendario).startOf("month").format("YYYY-MM-DD"),
+      this.$moment(this.valorCalendario).endOf("month").format("YYYY-MM-DD")
+    );
+    this.getActividadesMesCheckeoCalores(
+      this.$moment(this.valorCalendario).startOf("month").format("YYYY-MM-DD"),
+      this.$moment(this.valorCalendario).endOf("month").format("YYYY-MM-DD")
+    );
+    this.getActividadesMesInseminadas(
+      this.$moment(this.valorCalendario).startOf("month").format("YYYY-MM-DD"),
+      this.$moment(this.valorCalendario).endOf("month").format("YYYY-MM-DD")
+    );
+    this.getTresFantasmas(
+      this.$moment(this.valorCalendario).startOf("month").format("YYYY-MM-DD"),
+      this.$moment(this.valorCalendario).endOf("month").format("YYYY-MM-DD")
+    );
   },
   methods: {
     ...mapMutations([]),
@@ -218,20 +235,27 @@ export default {
         .catch(() => {});
     },
     getActividadesMesTernero(inicio, fin) {
+      let nombres = [
+        "745864-Rosita",
+        "745895-Toribio",
+        "745236-Rosa",
+        "745896-Lola",
+        "951236-Tere",
+      ];
       let fechaInicio = this.$moment(inicio);
       let fechaFin = this.$moment(fin).add(1, "d");
       let events = [];
-      for (let index = 0; index < 5; index++) {
+      for (let index = 0; index < 4; index++) {
         let fecha = this.$moment(
           this.fechaAleatoria(
             new Date(
               fechaInicio.year(),
-              fechaInicio.get("month") - 1,
+              fechaInicio.get("month"),
               fechaInicio.get("date")
             ),
             new Date(
               fechaFin.year(),
-              fechaFin.get("month") - 1,
+              fechaFin.get("month"),
               fechaFin.get("date")
             )
           )
@@ -242,12 +266,11 @@ export default {
           end: fecha.format("YYYY-MM-DD"),
           color: "blue",
           timed: false,
-          details: "Rosita",
+          details: [nombres[index]],
         });
       }
       this.events = this.events.concat(events);
-      console.log(this.events);
-      /* let events = [];      
+      /* let events = [];
       let fechaAnalisis = this.$moment(inicio);
       let fechaFin = this.$moment(fin).add(1, "d");
       do {
@@ -281,10 +304,46 @@ export default {
       } while (
         fechaAnalisis.format("DD-MM-YYYY") != fechaFin.format("DD-MM-YYYY")
       );
-      this.events = this.events.concat(events); */
+      this.events = this.events.concat(events);
+      console.log(this.events); */
     },
     getActividadesMesCheckeoCalores(inicio, fin) {
+      let nombres = [
+        "741258-Lolita",
+        "963258-Vaca Gorda",
+        "412584-X53",
+        "555652-Maria",
+        "441258-Mami",
+      ];
+      let fechaInicio = this.$moment(inicio);
+      let fechaFin = this.$moment(fin).add(1, "d");
       let events = [];
+      for (let index = 0; index < 4; index++) {
+        let fecha = this.$moment(
+          this.fechaAleatoria(
+            new Date(
+              fechaInicio.year(),
+              fechaInicio.get("month"),
+              fechaInicio.get("date")
+            ),
+            new Date(
+              fechaFin.year(),
+              fechaFin.get("month"),
+              fechaFin.get("date")
+            )
+          )
+        );
+        events.push({
+          name: "Calores post parto",
+          start: fecha.format("YYYY-MM-DD"),
+          end: fecha.format("YYYY-MM-DD"),
+          color: "red",
+          timed: false,
+          details: [nombres[index]],
+        });
+      }
+      this.events = this.events.concat(events);
+      /* let events = [];
       let fechaAnalisis = this.$moment(inicio);
       let fechaFin = this.$moment(fin).add(1, "d");
       do {
@@ -318,10 +377,54 @@ export default {
       } while (
         fechaAnalisis.format("DD-MM-YYYY") != fechaFin.format("DD-MM-YYYY")
       );
-      this.events = this.events.concat(events);
+      this.events = this.events.concat(events); */
     },
     getActividadesMesInseminadas(inicio, fin) {
+      let nombres = [
+        "741258-Lolita",
+        "963258-Vaca Gorda",
+        "412584-X53",
+        "555652-Maria",
+        "441258-Mamita",
+      ];
+      let fechaInicio = this.$moment(inicio);
+      let fechaFin = this.$moment(fin).add(1, "d");
       let events = [];
+      for (let index = 0; index < 4; index++) {
+        let fecha = this.$moment(
+          this.fechaAleatoria(
+            new Date(
+              fechaInicio.year(),
+              fechaInicio.get("month"),
+              fechaInicio.get("date")
+            ),
+            new Date(
+              fechaFin.year(),
+              fechaFin.get("month"),
+              fechaFin.get("date")
+            )
+          )
+        );
+        events.push({
+          name: "Calores post inseminacion",
+          start: fecha.format("YYYY-MM-DD"),
+          end: fecha.format("YYYY-MM-DD"),
+          color: "green",
+          timed: false,
+          details: [nombres[index]],
+        });
+        let fechaOchoMas = fecha.add(8, "d");
+        events.push({
+          name: "Ecografia",
+          start: fechaOchoMas.format("YYYY-MM-DD"),
+          end: fechaOchoMas.format("YYYY-MM-DD"),
+          color: "orange",
+          timed: false,
+          details: [nombres[index]],
+        });
+      }
+      this.events = this.events.concat(events);
+      /* let events = [];
       let fechaAnalisis = this.$moment(inicio);
       let fechaFin = this.$moment(fin).add(1, "d");
       do {
@@ -355,7 +458,7 @@ export default {
       } while (
         fechaAnalisis.format("DD-MM-YYYY") != fechaFin.format("DD-MM-YYYY")
       );
-      this.events = this.events.concat(events);
+      this.events = this.events.concat(events); */
     },
     obtenerVisitaVeterinarioPostInseminacion(inicio, fin) {
       let events = [];
@@ -401,11 +504,16 @@ export default {
       this.events = this.events.concat(events);
     },
     getEvents({ start, end }) {
+      if (this.iniciando == true) {
+        this.iniciando = false;
+        return false;
+      }
       this.events = [];
       this.getActividadesMesTernero(start.date, end.date);
       this.getActividadesMesCheckeoCalores(start.date, end.date);
       this.getActividadesMesInseminadas(start.date, end.date);
-      this.obtenerVisitaVeterinarioPostInseminacion(start.date, end.date);
+      this.getTresFantasmas(start.date, end.date);
+      /* this.obtenerVisitaVeterinarioPostInseminacion(start.date, end.date); */
     },
     recorrerFechas(inicio, fin) {
       let fechaInicio = this.$moment(inicio);
@@ -438,6 +546,60 @@ export default {
     },
     getEventColor(event) {
       return event.color;
+    },
+    getTresFantasmas(inicio, fin) {
+      let nombres = [
+        "854123-Renata",
+        "748596-Lechera",
+        "362514-Mama Roja",
+        "745832-La grande",
+      ];
+      let fechaInicio = this.$moment(inicio);
+      let fechaFin = this.$moment(fin).add(1, "d");
+      let events = [];
+      for (let index = 0; index < 3; index++) {
+        let fecha = this.$moment(
+          this.fechaAleatoria(
+            new Date(
+              fechaInicio.year(),
+              fechaInicio.get("month"),
+              fechaInicio.get("date")
+            ),
+            new Date(
+              fechaFin.year(),
+              fechaFin.get("month"),
+              fechaFin.get("date")
+            )
+          )
+        );
+        events.push({
+          name: "Secado",
+          start: fecha.format("YYYY-MM-DD"),
+          end: fecha.format("YYYY-MM-DD"),
+          color: "#770156",
+          timed: false,
+          details: [nombres[index]],
+        });
+        let lactancia = fecha.add(2, "days");
+        events.push({
+          name: "Preparación lactancia",
+          start: lactancia.format("YYYY-MM-DD"),
+          end: lactancia.add(4, "days").format("YYYY-MM-DD"),
+          color: "#ed6a1a",
+          timed: false,
+          details: [nombres[index]],
+        });
+        let Parto = fecha.add(-1, "days");
+        events.push({
+          name: "Parto aproximado",
+          start: Parto.format("YYYY-MM-DD"),
+          end: Parto.format("YYYY-MM-DD"),
+          color: "gray",
+          timed: false,
+          details: [nombres[index]],
+        });
+      }
+      this.events = this.events.concat(events);
     },
   },
   computed: {
