@@ -5,7 +5,7 @@
         <v-card-title>
           <div style="width: 100%">
             <v-toolbar flat color="white">
-              <v-toolbar-title>Consumibles</v-toolbar-title>
+              <v-toolbar-title>Movimiento de Consumibles</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
@@ -16,14 +16,16 @@
                     dark
                     small
                     color="primary"
-                    @click="$router.push({ name: 'BotiquinCreate' })"
+                    @click="
+                      $router.push({ name: 'MovimientosConsumiblesCreate' })
+                    "
                     v-bind="attrs"
                     v-on="on"
                   >
                     <v-icon dark>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <span>Nueva consumible</span>
+                <span>Registrar consumo</span>
               </v-tooltip>
             </v-toolbar>
           </div>
@@ -37,18 +39,11 @@
             ></v-text-field>
           </div>
         </v-card-title>
-        <v-data-table :headers="headers" :items="botiquinData" :search="search">
-          <template v-slot:item.cantidad_existente="{ item }">
-            <span
-              v-bind:class="{ alert: item.cantidad_existente <= item.alerta }"
-              >{{ item.cantidad_existente }}</span
-            >
-            <span
-              class="alert ml-2"
-              v-if="item.cantidad_existente <= item.alerta"
-              >Alerta</span
-            >
-          </template>
+        <v-data-table :headers="headers" :items="ConsumosData" :search="search">
+          <!-- <template v-slot:item.cantidad="{ item }">
+            <span v-bind:class="{ alert: item.cantidad<=item.alerta }">{{item.cantidad}}</span>
+            <span class="alert ml-2" v-if="item.cantidad<=item.alerta">Alerta</span>
+          </template> -->
           <!-- <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -63,45 +58,48 @@
 <script>
 import modalconfirm from "../generales/modalBoxConfirm";
 import { mapGetters, mapMutations } from "vuex";
-import BotiquinService from "../../services/botiquin.service";
+import ConsumosService from "../../services/consumos.service";
 export default {
   components: { modalconfirm },
-  name: "botiquin-list",
+  name: "consumos-list",
   data() {
     return {
-      botiquinService: null,
+      ConsumosService: null,
       search: "",
       headers: [
-        { text: "Código", value: "codigo" },
         { text: "Consumible", value: "medicina" },
-        { text: "Existencia", value: "cantidad_existente" },
+        { text: "Tipo de consumo", value: "tipo_movimiento" },
+        { text: "Cantidad", value: "cantidad_consumida" },
         { text: "Unidades", value: "unidades" },
-        { text: "Presentación", value: "presentacion" },
         { text: "Marca", value: "marca" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      botiquinData: [],
+      ConsumosData: [],
     };
   },
   created() {
-    this.botiquinService = new BotiquinService();
+    this.consumosService = new ConsumosService();
   },
   mounted() {
-    this.recuperarBotiquin();
+    this.recuperarConsumos();
   },
   methods: {
     ...mapMutations([]),
-    recuperarBotiquin() {
-      this.botiquinService
-        .getAllMedicinas()
+    recuperarConsumos() {
+      this.consumosService
+        .getAllConsumos()
         .then((result) => {
-          this.botiquinData = result.data.data;
+          this.ConsumosData = result.data.data.map((item) => {
+            item.tipo_movimiento =
+              item.tipo_movimiento == 1 ? "Entrada" : "Salida";
+            return item;
+          });
         })
         .catch(() => {});
     },
     editItem(item) {
       this.$router.push({
-        name: "BotiquinCreate",
+        name: "MovimientosConsumiblesCreate",
         params: { id: item.id },
       });
     },

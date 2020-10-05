@@ -3,30 +3,36 @@
     <v-container class="fill-height pa-0" fluid>
       <!-- <span class="bg"></span> -->
       <v-row class="fill-height pa-0 ma-0" align="center" justify="center">
-        <v-col cols="12" md="6" class="bg fill-height text-right d-none d-md-flex">
+        <v-col
+          cols="12"
+          md="6"
+          class="bg fill-height text-right d-none d-md-flex"
+        >
           <img src="../assets/img/circle-cropped.png" height="100" />
         </v-col>
-        <v-col cols="12" md="6" class="d-flex text-center fill-height columnaBotones">
+        <v-col
+          cols="12"
+          md="6"
+          class="d-flex text-center fill-height columnaBotones"
+        >
           <v-row no-gutters>
             <v-col cols="12" class="text-right divUser" no-gutters>
               <div class="divNombres">
                 <span class="mb-0 username">
-                  {{
-                  this.getUsuario.username
-                  }}
+                  {{ this.getUsuario.username }}
                 </span>
                 <span class="nombreFinca">{{ this.getFinca.nombre }}</span>
-                <v-btn class="ma-2" text icon color="blue lighten-2" @click="logout()">
+                <!-- <v-btn class="ma-2" text icon color="blue lighten-2" @click="logout()">
                   <v-icon>mdi-thumb-up</v-icon>
-                </v-btn>
+                </v-btn> -->
               </div>
               <v-avatar size="36" class="mr-3">
                 <img
                   class="mt-1"
                   :src="
                     'https://ui-avatars.com/api/?name=' +
-                      this.getUsuario.username +
-                      '&background=0D8ABC&color=fff'
+                    this.getUsuario.username +
+                    '&background=0D8ABC&color=fff'
                   "
                 />
               </v-avatar>
@@ -99,6 +105,8 @@ export default {
   margin-top: 6px;
   cursor: pointer;
   transition: 0.3s all;
+  height: 60px;
+  align-items: center;
 }
 
 .divIcon {

@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" class="text-h5">
-      Registro de medicamento
+      Registro de consumible
       <hr />
     </v-col>
     <v-col cols="12">
@@ -16,21 +16,30 @@
         </v-col>
         <v-col cols="12" sm="6" md="3">
           <v-text-field
-            label="Medicamento"
+            label="Consumible"
             v-model="medicamentoData.medicina"
-            hint="Nombre de la medicina"
+            hint="Nombre del consumible"
             persistent-hint
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6" md="3">
           <v-text-field
-            label="Cantidad"
+            label="Cantidad Inicial"
             v-model="medicamentoData.cantidad"
-            hint="Cantidad existente"
+            hint="Cantidad inicial"
             persistent-hint
             type="number"
             :min="0"
           ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-select
+            :items="tipos_producto"
+            label="Tipo de consumible"
+            v-model="medicamentoData.tipo"
+            hint="Seleccione el tipo de consumible"
+            persistent-hint
+          ></v-select>
         </v-col>
         <v-col cols="12" sm="6" md="3">
           <v-text-field
@@ -44,7 +53,7 @@
           <v-text-field
             label="Presentación"
             v-model="medicamentoData.presentacion"
-            hint="Presentación del medicamento"
+            hint="Presentación del consumible"
             persistent-hint
           ></v-text-field>
         </v-col>
@@ -62,7 +71,7 @@
           <v-text-field
             label="Marca"
             v-model="medicamentoData.marca"
-            hint="Marca del medicamento"
+            hint="Marca del consumible"
             persistent-hint
           ></v-text-field>
         </v-col>
@@ -77,22 +86,31 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-btn color="primary" dark class="ml-3" @click="guardar()">Guardar</v-btn>
-      <v-btn color="error" dark class="ml-3" @click="$router.push({name:'BotiquinList'})">Cancelar</v-btn>
+      <v-btn color="primary" dark class="ml-3" @click="guardar()"
+        >Guardar</v-btn
+      >
+      <v-btn
+        color="error"
+        dark
+        class="ml-3"
+        @click="$router.push({ name: 'BotiquinList' })"
+        >Cancelar</v-btn
+      >
     </v-col>
   </v-row>
 </template>
 
 <script>
-import AnimalesService from "../../services/animales.service";
 import BotiquinService from "../../services/botiquin.service";
+import ConsumosService from "../../services/consumos.service";
 export default {
   name: "botiquin-create",
   data() {
     return {
-      animalesService: null,
       botiquinService: null,
+      consumosService: null,
       type: "create",
+      tipos_producto: ["Medicina", "Alimento", "Equipo Seguridad"],
       medicamentoData: {
         id: 0,
         codigo: null,
@@ -103,12 +121,13 @@ export default {
         marca: null,
         alerta: 0,
         observaciones: "",
+        tipo: null,
       },
       animales: [],
     };
   },
   created() {
-    this.animalesService = new AnimalesService();
+    this.consumosService = new ConsumosService();
     this.botiquinService = new BotiquinService();
   },
   mounted() {
@@ -129,8 +148,24 @@ export default {
     async guardar() {
       let payload = null;
       if (this.type == "create") {
+        let nuevo_id = 0;
         await this.botiquinService
           .createMedicina(this.medicamentoData)
+          .then((respuesta) => {
+            nuevo_id = respuesta.data.id_creado;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        let dataConsumo = {
+          consumible_id: nuevo_id,
+          cantidad_consumida: 0,
+          cantidad_existente: parseFloat(this.medicamentoData.cantidad),
+          observaciones: "",
+          tipo_movimiento: 1,
+        };
+        this.consumosService
+          .createConsumo(dataConsumo)
           .then(() => {
             payload = {
               text: "Registro guardado exitosamente",
@@ -143,6 +178,7 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+        console.log(nuevo_id);
       } else {
         payload = {
           text: "Registro editado exitosamente",

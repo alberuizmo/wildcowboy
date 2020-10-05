@@ -23,9 +23,9 @@ const routes = [
     component: () => import("../components/modules"),
   },
   {
-    path: "/main",
-    name: "Main",
-    component: () => import("../components/main-layout"),
+    path: "/ganaderia",
+    name: "Ganaderia",
+    component: () => import("../components/main-ganaderia"),
     children: [
       {
         path: "ganaderia",
@@ -45,38 +45,6 @@ const routes = [
             path: "create/:id?",
             name: "PotrerosCreate",
             component: () => import("../components/potreros/potreros-create"),
-          },
-        ],
-      },
-      {
-        path: "roles",
-        component: () => import("../components/roles/roles"),
-        children: [
-          {
-            path: "",
-            name: "RolesList",
-            component: () => import("../components/roles/roles-list"),
-          },
-          {
-            path: "create/:id?",
-            name: "RolesCreate",
-            component: () => import("../components/roles/roles-create"),
-          },
-        ],
-      },
-      {
-        path: "usuarios",
-        component: () => import("../components/usuarios/usuarios"),
-        children: [
-          {
-            path: "",
-            name: "UsuariosList",
-            component: () => import("../components/usuarios/usuarios-list"),
-          },
-          {
-            path: "create/:id?",
-            name: "UsuariosCreate",
-            component: () => import("../components/usuarios/usuarios-create"),
           },
         ],
       },
@@ -216,7 +184,7 @@ const routes = [
         ],
       },
       {
-        path: "botiquin",
+        path: "consumibles",
         component: () => import("../components/botiquin/botiquin"),
         children: [
           {
@@ -231,6 +199,73 @@ const routes = [
           },
         ],
       },
+      {
+        path: "movimiento-consumibles",
+        component: () =>
+          import("../components/movimiento-consumibles/movimiento-consumibles"),
+        children: [
+          {
+            path: "",
+            name: "MovimientosConsumiblesList",
+            component: () =>
+              import(
+                "../components/movimiento-consumibles/movimiento-consumibles-list"
+              ),
+          },
+          {
+            path: "create/:id?",
+            name: "MovimientosConsumiblesCreate",
+            component: () =>
+              import(
+                "../components/movimiento-consumibles/movimiento-consumibles-create"
+              ),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/administracion",
+    name: "administracion",
+    component: () => import("../components/main-admin"),
+    children: [
+      {
+        path: "admin-dashboard",
+        name: "DashboardAdmin",
+        component: () => import("../components/dashboard-administracion"),
+      },
+      {
+        path: "roles",
+        component: () => import("../components/roles/roles"),
+        children: [
+          {
+            path: "",
+            name: "RolesList",
+            component: () => import("../components/roles/roles-list"),
+          },
+          {
+            path: "create/:id?",
+            name: "RolesCreate",
+            component: () => import("../components/roles/roles-create"),
+          },
+        ],
+      },
+      {
+        path: "usuarios",
+        component: () => import("../components/usuarios/usuarios"),
+        children: [
+          {
+            path: "",
+            name: "UsuariosList",
+            component: () => import("../components/usuarios/usuarios-list"),
+          },
+          {
+            path: "create/:id?",
+            name: "UsuariosCreate",
+            component: () => import("../components/usuarios/usuarios-create"),
+          },
+        ],
+      },
     ],
   },
   {
@@ -241,6 +276,21 @@ const routes = [
   {
     path: "/tasks",
     name: "Tasks",
+    component: () => import("../components/construction-page"),
+  },
+  {
+    path: "/agro",
+    name: "DashboardAgro",
+    component: () => import("../components/construction-page"),
+  },
+  {
+    path: "/equinos",
+    name: "DashboardEquinos",
+    component: () => import("../components/construction-page"),
+  },
+  {
+    path: "/marketplace",
+    name: "DashboardMarketplace",
     component: () => import("../components/construction-page"),
   },
   {

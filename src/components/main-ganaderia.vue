@@ -26,28 +26,6 @@
         </v-list-item>
         <v-list-item
           link
-          @click="$router.push({ name: 'RolesList' }).catch(() => {})"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-account-switch</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Roles</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          link
-          @click="$router.push({ name: 'UsuariosList' }).catch(() => {})"
-        >
-          <v-list-item-action>
-            <v-icon>mdi-account-multiple</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Usuarios</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          link
           @click="$router.push({ name: 'AnimalesList' }).catch(() => {})"
         >
           <v-list-item-action>
@@ -130,10 +108,23 @@
           @click="$router.push({ name: 'BotiquinList' }).catch(() => {})"
         >
           <v-list-item-action>
-            <v-icon>mdi-pharmacy</v-icon>
+            <v-icon>mdi-rotate-right</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Botiquin</v-list-item-title>
+            <v-list-item-title>Consumibles</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          link
+          @click="
+            $router.push({ name: 'MovimientosConsumiblesList' }).catch(() => {})
+          "
+        >
+          <v-list-item-action>
+            <v-icon>mdi-basket-minus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Movimiento Consumibles</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item

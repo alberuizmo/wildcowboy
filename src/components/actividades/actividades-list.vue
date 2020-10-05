@@ -1,10 +1,18 @@
 <template>
-  <div style="width:100%">
+  <div style="width: 100%">
     <v-sheet tile height="54" color="grey lighten-3" class="d-flex">
       <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
-      <v-select v-model="type" :items="types" dense outlined hide-details class="ma-2" label="type"></v-select>
+      <v-select
+        v-model="type"
+        :items="types"
+        dense
+        outlined
+        hide-details
+        class="ma-2"
+        label="type"
+      ></v-select>
       <v-spacer></v-spacer>
       <v-btn icon class="ma-2" @click="$refs.calendar.next()">
         <v-icon>mdi-chevron-right</v-icon>
@@ -44,10 +52,14 @@
             </v-btn>
           </v-toolbar>
           <v-card-text>
-            <p v-for="(item, index) in selectedEvent.details" :key="index">{{ item }}</p>
+            <p v-for="(item, index) in selectedEvent.details" :key="index">
+              {{ item }}
+            </p>
           </v-card-text>
           <v-card-actions>
-            <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
+            <v-btn text color="secondary" @click="selectedOpen = false"
+              >Cancel</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-menu>
@@ -61,7 +73,9 @@ import AnimalesService from "../../services/animales.service";
 import PartosService from "../../services/partos.service";
 import InseminacionesService from "../../services/inseminaciones.service";
 import CaloresService from "../../services/calores.service";
+import { Helpers } from "../../mixins/helpers";
 export default {
+  mixins: [Helpers],
   name: "actividades-list",
   data() {
     return {
@@ -204,7 +218,36 @@ export default {
         .catch(() => {});
     },
     getActividadesMesTernero(inicio, fin) {
+      let fechaInicio = this.$moment(inicio);
+      let fechaFin = this.$moment(fin).add(1, "d");
       let events = [];
+      for (let index = 0; index < 5; index++) {
+        let fecha = this.$moment(
+          this.fechaAleatoria(
+            new Date(
+              fechaInicio.year(),
+              fechaInicio.get("month") - 1,
+              fechaInicio.get("date")
+            ),
+            new Date(
+              fechaFin.year(),
+              fechaFin.get("month") - 1,
+              fechaFin.get("date")
+            )
+          )
+        );
+        events.push({
+          name: "Revisión Terneros",
+          start: fecha.format("YYYY-MM-DD"),
+          end: fecha.format("YYYY-MM-DD"),
+          color: "blue",
+          timed: false,
+          details: "Rosita",
+        });
+      }
+      this.events = this.events.concat(events);
+      console.log(this.events);
+      /* let events = [];      
       let fechaAnalisis = this.$moment(inicio);
       let fechaFin = this.$moment(fin).add(1, "d");
       do {
@@ -238,7 +281,7 @@ export default {
       } while (
         fechaAnalisis.format("DD-MM-YYYY") != fechaFin.format("DD-MM-YYYY")
       );
-      this.events = this.events.concat(events);
+      this.events = this.events.concat(events); */
     },
     getActividadesMesCheckeoCalores(inicio, fin) {
       let events = [];

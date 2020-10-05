@@ -412,14 +412,14 @@ export default {
         if (this.general) {
           dataLechera.push({
             fecha: fechaInicio.format("DD-MM-YYYY"),
-            produccion: this.numeroRandom(50, 600),
+            produccion: this.numeroRandom(500, 600),
           });
         } else {
           for (let index = 0; index < this.animalesReport.length; index++) {
             const element = this.animalesReport[index];
             dataLechera.push({
               fecha: fechaInicio.format("DD-MM-YYYY"),
-              produccion: this.numeroRandom(10, 50),
+              produccion: this.numeroRandom(10, 30),
               animal: element.nombre_id,
             });
           }
@@ -431,14 +431,14 @@ export default {
           if (this.general) {
             dataLechera.push({
               fecha: fechaInicio.format("DD-MM-YYYY"),
-              produccion: this.numeroRandom(50, 600),
+              produccion: this.numeroRandom(500, 600),
             });
           } else {
             for (let index = 0; index < this.animalesReport.length; index++) {
               const element = this.animalesReport[index];
               dataLechera.push({
                 fecha: fechaInicio.format("DD-MM-YYYY"),
-                produccion: this.numeroRandom(10, 50),
+                produccion: this.numeroRandom(10, 30),
                 animal: element.nombre_id,
               });
             }
